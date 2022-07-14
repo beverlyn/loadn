@@ -56,6 +56,14 @@ function currentHour() {
   return hourPerc;
 }
 
+function currentMinute() {
+  const current = new Date();
+  const currentSecond = current.getSeconds();
+
+  const minutePerc = (currentSecond / 60) * 100;
+  return minutePerc;
+}
+
 </script>
 
 <template>
@@ -63,8 +71,8 @@ function currentHour() {
   <ProgressBar label="Month" maxN="30 days" :perc="currentMonthDay()" />
   <ProgressBar label="Week" maxN="Saturday" :perc="currentWeekday()" />
   <ProgressBar label="Day" maxN="24h" :perc="currentDayHour()"/>
-  <ProgressBar label="Hour" maxN="60m" />
-  <ProgressBar label="Minute" maxN="60s" />
+  <ProgressBar label="Hour" maxN="60m" :perc="currentHour()"/>
+  <ProgressBar label="Minute" maxN="60s" :perc="currentMinute()"/>
 </template>
 
 <style scoped></style>
