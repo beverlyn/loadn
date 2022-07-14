@@ -1,77 +1,80 @@
 <script setup>
+import { reactive } from 'vue';
 import ProgressBar from './components/ProgressBar.vue';
 
-function currentYearDay() {
-  const current = new Date();
-  const start = new Date(current.getFullYear(), 0, 0);
+function currentYearDay(date) {
+  const start = new Date(date.getFullYear(), 0, 0);
   const diff =
-    current -
+    date -
     start +
-    (start.getTimezoneOffset() - current.getTimezoneOffset()) * 60 * 1000;
+    (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
   const oneDay = 1000 * 60 * 60 * 24;
   const yearDay = Math.floor(diff / oneDay);
 
-  const year = current.getFullYear();
+  const year = date.getFullYear();
   const daysInYear =
     (year % 4 === 0 && year % 100 > 0) || year % 400 == 0 ? 366 : 365;
 
-  const yearPerc = yearDay / daysInYear;
-  return yearPerc;
+  return yearDay / daysInYear;
 }
 
-function currentMonthDay() {
-  const current = new Date();
-  const currentYear = current.getFullYear();
-  const currentMonth = current.getMonth() + 1;
+function currentMonthDay(date) {
+  const currentYear = date.getFullYear();
+  const currentMonth = date.getMonth() + 1;
   const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+  const monthDay = date.getDate();
 
-  const monthDay = current.getDate();
-
-  const monthPerc = monthDay / daysInMonth;
-  return monthPerc;
+  return monthDay / daysInMonth;
 }
 
-function currentWeekday() {
-  const current = new Date();
-  const currentDay = current.getDay() + 1;
-  const weekPerc = currentDay / 7;
-  return weekPerc;
+function currentWeekday(date) {
+  return (date.getDay() + 1) / 7;
 }
 
-function currentDayHour() {
-  const current = new Date();
-  const currentHour = current.getHours();
-  const currentMinute = current.getMinutes();
+function currentDayHour(date) {
+  const currentHour = date.getHours();
+  const currentMinute = date.getMinutes();
   const totalMinute = currentHour * 60 + currentMinute;
 
-  const dayPerc = totalMinute / 1440;
-  return dayPerc;
+  return totalMinute / 1440;
 }
 
-function currentHour() {
-  const current = new Date();
-  const currentMinute = current.getMinutes();
+const getHourProgress = (date) => date.getMinutes() / 60;
+const getMinuteProgress = (date) => date.getSeconds() / 60;
 
-  const hourPerc = currentMinute / 60;
-  return hourPerc;
-}
+const date = new Date();
+const progress = reactive({
+  minute: getMinuteProgress(date),
+  hour: getHourProgress(date),
+});
 
-function currentMinute() {
-  const current = new Date();
-  const currentSecond = current.getSeconds();
-
-  const minutePerc = currentSecond / 60;
-  return minutePerc;
-}
+setInterval(() => {
+  const date = new Date();
+  console.log(date);
+  progress.minute = getMinuteProgress(date);
+  progress.hour = getHourProgress(date);
+}, 1000);
 </script>
 
 <template>
-  <ProgressBar title="Year" end-label="365 days" :percent="currentYearDay()" />
-  <ProgressBar title="Month" end-label="30 days" :percent="currentMonthDay()" />
-  <ProgressBar title="Week" end-label="Saturday" :percent="currentWeekday()" />
-  <ProgressBar title="Day" end-label="24h" :percent="currentDayHour()" />
-  <ProgressBar title="Hour" end-label="60m" :percent="currentHour()" />
-  <ProgressBar title="Minute" end-label="60s" :percent="currentMinute()" />
+  <ProgressBar
+    title="Year"
+    end-label="365 days"
+    :percent="currentYearDay(date)"
+  />
+  <ProgressBar
+    title="Month"
+    end-label="30 days"
+    :percent="currentMonthDay(date)"
+  />
+  <ProgressBar
+    title="Week"
+    end-label="Saturday"
+    :percent="currentWeekday(date)"
+  />
+  <ProgressBar title="Day" end-label="24h" :percent="currentDayHour(date)" />
+  <ProgressBar title="Hour" end-label="60m" :percent="progress.hour" />
+  <ProgressBar title="Minute" end-label="60s" :percent="progress.minute" />
 </template>
 
 <style scoped></style>
