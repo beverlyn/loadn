@@ -33,14 +33,10 @@ export default {
   }
 }
 
-
-
-
-
 </script>
 
 <template>
-  <ProgressBar label="Year" maxN="365 days"/>
+  <ProgressBar label="Year" maxN="365 days" perc={{ currentYearDay() }}/>
   <ProgressBar label="Month" maxN="30 days"/>
   <ProgressBar label="Week" maxN="Saturday"/>
   <ProgressBar label="Day" maxN="24h"/>

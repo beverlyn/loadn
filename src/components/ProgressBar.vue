@@ -2,6 +2,7 @@
 defineProps({
   label: String,
   maxN: String,
+  perc: String,
 });
 </script>
 
@@ -10,7 +11,7 @@ defineProps({
     {{ label }}
   </p>
   <div class="progressBar">
-    <div class="progress">80%</div>
+    <div class="progress">{{ perc }}</div>
   </div>
   <p class="maxN">
     {{ maxN }}
