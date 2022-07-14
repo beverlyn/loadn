@@ -1,46 +1,49 @@
 <script setup>
 defineProps({
-  label: String,
-  maxN: String,
-  perc: String,
+  title: String,
+  endLabel: String,
+  percent: Number,
 });
 </script>
 
 <template>
-  <p class="label">
-    {{ label }}
+  <p class="title">
+    {{ title }}
   </p>
-  <div class="progressBar">
-    <div class="progress">{{ perc }}</div>
+  <div class="progress-bar">
+    <div
+      class="progress"
+      :style="{
+        width: percent * 100 + '%',
+      }"
+    />
   </div>
-  <p class="maxN">
-    {{ maxN }}
+  <p class="end-label">
+    {{ endLabel }}
   </p>
 </template>
 
 <style scoped>
-    .label {
-        font-size: 20px;
-        text-align: left;
-    }
-  
-    .progressBar {
-        background-color: rgb(192, 192, 192);
-        width: 100%;
-    }
-  
-    .progress {
-        background-color: rgb(116, 194, 92);
-        color: white;
-        padding: 1%;
-        text-align: right;
-        font-size: 20px;
-        width:80%;
-    }
+.title {
+  font-size: 16px;
+  text-align: left;
+}
 
-    .maxN {
-      text-align: right;
-      margin-top: 0px;
-    }
+.progress-bar {
+  background-color: rgb(192, 192, 192);
+  width: 100%;
+}
 
+.progress {
+  background-color: rgb(116, 194, 92);
+  color: white;
+  padding: 1%;
+  text-align: right;
+  font-size: 20px;
+}
+
+.end-label {
+  text-align: right;
+  margin-top: 0px;
+}
 </style>

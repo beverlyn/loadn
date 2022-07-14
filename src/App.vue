@@ -15,7 +15,7 @@ function currentYearDay() {
   const daysInYear =
     (year % 4 === 0 && year % 100 > 0) || year % 400 == 0 ? 366 : 365;
 
-  const yearPerc = (yearDay / daysInYear) * 100;
+  const yearPerc = yearDay / daysInYear;
   return yearPerc;
 }
 
@@ -27,14 +27,14 @@ function currentMonthDay() {
 
   const monthDay = current.getDate();
 
-  const monthPerc = (monthDay / daysInMonth) * 100;
+  const monthPerc = monthDay / daysInMonth;
   return monthPerc;
 }
 
 function currentWeekday() {
   const current = new Date();
   const currentDay = current.getDay() + 1;
-  const weekPerc = (currentDay / 7) * 100;
+  const weekPerc = currentDay / 7;
   return weekPerc;
 }
 
@@ -44,7 +44,7 @@ function currentDayHour() {
   const currentMinute = current.getMinutes();
   const totalMinute = currentHour * 60 + currentMinute;
 
-  const dayPerc = (totalMinute / 1440) * 100;
+  const dayPerc = totalMinute / 1440;
   return dayPerc;
 }
 
@@ -52,7 +52,7 @@ function currentHour() {
   const current = new Date();
   const currentMinute = current.getMinutes();
 
-  const hourPerc = (currentMinute / 60) * 100;
+  const hourPerc = currentMinute / 60;
   return hourPerc;
 }
 
@@ -60,19 +60,18 @@ function currentMinute() {
   const current = new Date();
   const currentSecond = current.getSeconds();
 
-  const minutePerc = (currentSecond / 60) * 100;
+  const minutePerc = currentSecond / 60;
   return minutePerc;
 }
-
 </script>
 
 <template>
-  <ProgressBar label="Year" maxN="365 days" :perc="currentYearDay()" />
-  <ProgressBar label="Month" maxN="30 days" :perc="currentMonthDay()" />
-  <ProgressBar label="Week" maxN="Saturday" :perc="currentWeekday()" />
-  <ProgressBar label="Day" maxN="24h" :perc="currentDayHour()"/>
-  <ProgressBar label="Hour" maxN="60m" :perc="currentHour()"/>
-  <ProgressBar label="Minute" maxN="60s" :perc="currentMinute()"/>
+  <ProgressBar title="Year" end-label="365 days" :percent="currentYearDay()" />
+  <ProgressBar title="Month" end-label="30 days" :percent="currentMonthDay()" />
+  <ProgressBar title="Week" end-label="Saturday" :percent="currentWeekday()" />
+  <ProgressBar title="Day" end-label="24h" :percent="currentDayHour()" />
+  <ProgressBar title="Hour" end-label="60m" :percent="currentHour()" />
+  <ProgressBar title="Minute" end-label="60s" :percent="currentMinute()" />
 </template>
 
 <style scoped></style>
