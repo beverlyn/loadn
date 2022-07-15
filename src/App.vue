@@ -2,7 +2,7 @@
 import { reactive } from 'vue';
 import ProgressBar from './components/ProgressBar.vue';
 
-function currentYearDay(date) {
+function getYearProgress(date) {
   const start = new Date(date.getFullYear(), 0, 0);
   const diff =
     date -
@@ -18,61 +18,48 @@ function currentYearDay(date) {
   return yearDay / daysInYear;
 }
 
-function currentMonthDay(date) {
-  const currentYear = date.getFullYear();
-  const currentMonth = date.getMonth() + 1;
-  const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
-  const monthDay = date.getDate();
-
-  return monthDay / daysInMonth;
+function getMonthProgress(date) {
+  const daysInMonth = new Date(
+    date.getFullYear(),
+    date.getMonth() + 1,
+    0
+  ).getDate();
+  return date.getDate() / daysInMonth;
 }
 
-function currentWeekday(date) {
-  return (date.getDay() + 1) / 7;
-}
-
-function currentDayHour(date) {
-  const currentHour = date.getHours();
-  const currentMinute = date.getMinutes();
-  const totalMinute = currentHour * 60 + currentMinute;
-
-  return totalMinute / 1440;
-}
-
+const getWeekProgress = (date) => (date.getDay() + 1) / 7;
+const getDayProgress = (date) => (date.getHours() * 60 + date.getMinutes()) / 1440;
 const getHourProgress = (date) => date.getMinutes() / 60;
 const getMinuteProgress = (date) => date.getSeconds() / 60;
 
 const date = new Date();
 const progress = reactive({
-  minute: getMinuteProgress(date),
+  year: getYearProgress(date),
+  month: getMonthProgress(date),
+  week: getWeekProgress(date),
+  day: getDayProgress(date),
   hour: getHourProgress(date),
+  minute: getMinuteProgress(date),
 });
 
 setInterval(() => {
   const date = new Date();
   console.log(date);
-  progress.minute = getMinuteProgress(date);
+
+  progress.year = getYearProgress(date);
+  progress.month = getMonthProgress(date);
+  progress.week = getWeekProgress(date);
+  progress.day = getDayProgress(date);
   progress.hour = getHourProgress(date);
+  progress.minute = getMinuteProgress(date);
 }, 1000);
 </script>
 
 <template>
-  <ProgressBar
-    title="Year"
-    end-label="365 days"
-    :percent="currentYearDay(date)"
-  />
-  <ProgressBar
-    title="Month"
-    end-label="30 days"
-    :percent="currentMonthDay(date)"
-  />
-  <ProgressBar
-    title="Week"
-    end-label="Saturday"
-    :percent="currentWeekday(date)"
-  />
-  <ProgressBar title="Day" end-label="24h" :percent="currentDayHour(date)" />
+  <ProgressBar title="Year" end-label="365 days" :percent="progress.year" />
+  <ProgressBar title="Month" end-label="30 days" :percent="progress.month" />
+  <ProgressBar title="Week" end-label="Saturday" :percent="progress.week" />
+  <ProgressBar title="Day" end-label="24h" :percent="progress.day" />
   <ProgressBar title="Hour" end-label="60m" :percent="progress.hour" />
   <ProgressBar title="Minute" end-label="60s" :percent="progress.minute" />
 </template>
