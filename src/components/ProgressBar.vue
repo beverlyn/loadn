@@ -25,26 +25,29 @@ defineProps({
 
 <style scoped>
 .title {
-  font-size: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   text-align: left;
 }
 
 .progress-bar {
-  background-color: rgb(192, 192, 192);
+  background-color: #aaa;
   width: 100%;
+  height: 8px;
+  overflow: hidden;
 }
 
 .progress {
-  background-color: rgb(116, 194, 92);
-  color: white;
-  padding: 1%;
-  text-align: right;
-  font-size: 20px;
+  height: 100%;
+  background-color: #555;
   transition: width 1s ease-out;
 }
 
 .end-label {
+  font-size: 12px;
   text-align: right;
-  margin-top: 0px;
+  margin-top: 8px;
 }
 </style>
