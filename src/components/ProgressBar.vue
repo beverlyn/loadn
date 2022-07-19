@@ -40,6 +40,7 @@ defineProps({
   padding: 1%;
   text-align: right;
   font-size: 20px;
+  transition: width 1s ease-out;
 }
 
 .end-label {

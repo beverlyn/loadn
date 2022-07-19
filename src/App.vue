@@ -7,6 +7,10 @@ function getDaysInYear(date) {
   return (year % 4 === 0 && year % 100 > 0) || year % 400 == 0 ? 366 : 365;
 }
 
+function getDaysInMonth(date) {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+}
+
 function getYearProgress(date) {
   const start = new Date(date.getFullYear(), 0, 0);
   const diff =
@@ -17,10 +21,6 @@ function getYearProgress(date) {
   const yearDay = Math.floor(diff / oneDay);
 
   return yearDay / getDaysInYear(date);
-}
-
-function getDaysInMonth(date) {
-  return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 }
 
 const getMonthProgress = (date) => date.getDate() / getDaysInMonth(date);
