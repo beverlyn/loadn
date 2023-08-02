@@ -59,9 +59,9 @@ setInterval(() => {
 </script>
 
 <template>
-  <date>
-    
-  </date>
+  <div>
+    "date"
+  </div>
   <ProgressBar title="Year" :end-label="progress.yearDays" :percent="progress.year" />
   <ProgressBar title="Month" :end-label="progress.monthDays" :percent="progress.month" />
   <ProgressBar title="Week" end-label="Saturday" :percent="progress.week" />
