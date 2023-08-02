@@ -1,26 +1,26 @@
 <script setup>
-import { reactive } from 'vue';
-import ProgressBar from './components/ProgressBar.vue';
+  import { reactive } from 'vue';
+  import ProgressBar from './components/ProgressBar.vue';
 
-function getDaysInYear(date) {
-  const year = date.getFullYear();
-  return (year % 4 === 0 && year % 100 > 0) || year % 400 == 0 ? 366 : 365;
-}
+  function getDaysInYear(date) {
+    const year = date.getFullYear();
+    return (year % 4 === 0 && year % 100 > 0) || year % 400 == 0 ? 366 : 365;
+  }
 
-function getDaysInMonth(date) {
-  return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-}
+  function getDaysInMonth(date) {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  }
 
-function getYearProgress(date) {
-  const start = new Date(date.getFullYear(), 0, 0);
-  const diff =
-    date -
-    start +
-    (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
-  const oneDay = 1000 * 60 * 60 * 24;
-  const yearDay = Math.floor(diff / oneDay);
+  function getYearProgress(date) {
+    const start = new Date(date.getFullYear(), 0, 0);
+    const diff =
+      date -
+      start +
+      (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
+    const oneDay = 1000 * 60 * 60 * 24;
+    const yearDay = Math.floor(diff / oneDay);
 
-  return yearDay / getDaysInYear(date);
+    return yearDay / getDaysInYear(date);
 }
 
 const getMonthProgress = (date) => date.getDate() / getDaysInMonth(date);
@@ -59,6 +59,9 @@ setInterval(() => {
 </script>
 
 <template>
+  <date>
+    
+  </date>
   <ProgressBar title="Year" :end-label="progress.yearDays" :percent="progress.year" />
   <ProgressBar title="Month" :end-label="progress.monthDays" :percent="progress.month" />
   <ProgressBar title="Week" end-label="Saturday" :percent="progress.week" />
@@ -67,4 +70,5 @@ setInterval(() => {
   <ProgressBar title="Minute" end-label="60s" :percent="progress.minute" />
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>
