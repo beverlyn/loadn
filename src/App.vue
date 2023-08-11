@@ -1,74 +1,138 @@
-<script setup>
-  import { reactive } from 'vue';
-  import ProgressBar from './components/ProgressBar.vue';
+<script setup lang="ts">
+	import { reactive, ref } from 'vue';
+	import { format, getDaysInYear, getDaysInMonth } from 'date-fns';
+	import * as ProgressCalculation from './utils/ProgressCalculation';
+	import ProgressBar from "./components/ProgressBar.vue";
+	import ToggleSwitch from './components/ToggleSwitch.vue';
 
-  function getDaysInYear(date) {
-    const year = date.getFullYear();
-    return (year % 4 === 0 && year % 100 > 0) || year % 400 == 0 ? 366 : 365;
-  }
+	const currentDate = ref(new Date());
 
-  function getDaysInMonth(date) {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  }
+	const currentDateFormat = ref(currentDate.value.toLocaleDateString(undefined, {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+		weekday: "short",
+	}));
 
-  function getYearProgress(date) {
-    const start = new Date(date.getFullYear(), 0, 0);
-    const diff =
-      date -
-      start +
-      (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
-    const oneDay = 1000 * 60 * 60 * 24;
-    const yearDay = Math.floor(diff / oneDay);
+	const currentTime = ref(format(currentDate.value, 'h:mm a'));
 
-    return yearDay / getDaysInYear(date);
-}
+	const progress = reactive({
+		year: ProgressCalculation.getYearProgress(currentDate.value),
+		month: ProgressCalculation.getMonthProgress(currentDate.value),
+		week: ProgressCalculation.getWeekProgress(currentDate.value),
+		day: ProgressCalculation.getDayProgress(currentDate.value),
+		hour: ProgressCalculation.getHourProgress(currentDate.value),
+		minute: ProgressCalculation.getMinuteProgress(currentDate.value),
 
-const getMonthProgress = (date) => date.getDate() / getDaysInMonth(date);
-const getWeekProgress = (date) => (date.getDay() + 1) / 7;
-const getDayProgress = (date) => (date.getHours() * 60 + date.getMinutes()) / 1440;
-const getHourProgress = (date) => date.getMinutes() / 60;
-const getMinuteProgress = (date) => date.getSeconds() / 60;
+		totalYearDays: getDaysInYear(currentDate.value),
+		totalMonthDays: getDaysInMonth(currentDate.value),
+	});
 
-const date = new Date();
-const progress = reactive({
-  year: getYearProgress(date),
-  month: getMonthProgress(date),
-  week: getWeekProgress(date),
-  day: getDayProgress(date),
-  hour: getHourProgress(date),
-  minute: getMinuteProgress(date),
+	setInterval(() => {
+		currentDate.value = new Date();
+		currentTime.value = format(currentDate.value, 'h:mm a');
+		currentDateFormat.value = currentDate.value.toLocaleDateString(undefined, {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+		weekday: "short",
+		});
 
-  totalYearDays: getDaysInYear(date),
-  totalMonthDays: getDaysInMonth(date),
-});
+		progress.year = ProgressCalculation.getYearProgress(currentDate.value);
+		progress.month = ProgressCalculation.getMonthProgress(currentDate.value);
+		progress.week = ProgressCalculation.getWeekProgress(currentDate.value);
+		progress.day = ProgressCalculation.getDayProgress(currentDate.value);
+		progress.hour = ProgressCalculation.getHourProgress(currentDate.value);
+		progress.minute = ProgressCalculation.getMinuteProgress(currentDate.value);
 
-setInterval(() => {
-  const date = new Date();
-  console.log(date);
+		progress.totalYearDays = getDaysInYear(currentDate.value) ;
+		progress.totalMonthDays = getDaysInMonth(currentDate.value);
+	}, 1000);
 
-  progress.year = getYearProgress(date);
-  progress.month = getMonthProgress(date);
-  progress.week = getWeekProgress(date);
-  progress.day = getDayProgress(date);
-  progress.hour = getHourProgress(date);
-  progress.minute = getMinuteProgress(date);
-
-  progress.yearDays = getDaysInYear(date);
-  progress.monthDays = getDaysInMonth(date);
-}, 1000);
+	const percentOrCounts = ref(true);
+	const leftOrPass = ref(true);
 </script>
 
 <template>
-  <div>
-    "date"
-  </div>
-  <ProgressBar title="Year" :end-label="progress.yearDays" :percent="progress.year" />
-  <ProgressBar title="Month" :end-label="progress.monthDays" :percent="progress.month" />
-  <ProgressBar title="Week" end-label="Saturday" :percent="progress.week" />
-  <ProgressBar title="Day" end-label="24h" :percent="progress.day" />
-  <ProgressBar title="Hour" end-label="60m" :percent="progress.hour" />
-  <ProgressBar title="Minute" end-label="60s" :percent="progress.minute" />
-</template>
+	<div class="flex flex-row justify-between">
+	<ToggleSwitch
+		labelTitle="percentOrCounts"
+		v-model:checked="percentOrCounts"
+	>
+		{{ percentOrCounts ? '%' : '#' }}
+	</ToggleSwitch>
+	<ToggleSwitch
+		labelTitle="leftOrPass"
+		v-model:checked="leftOrPass"
+	>
+		<IconIcRoundHourglassBottom
+			class="transition"
+			:class="{
+				'rotate-180': leftOrPass,
+			}"
+		/>
+	</ToggleSwitch>
+	</div>
 
-<style scoped>
-</style>
+	<div class="text-center font-sans mb-5">
+		<div class="date text-xl text-strong">
+			{{ currentDateFormat }}
+		</div>
+
+		<div class="time text-lg">
+			{{ currentTime }}
+		</div>
+	</div>
+
+	<div class="grid grid-rows-6 gap-10 align-between">
+	<ProgressBar 
+	title="Year"
+	:end-label="progress.totalYearDays + 'd'"
+	:count="progress.year"
+	:total="progress.totalYearDays"
+	unit="d"
+	v-bind:percent="percentOrCounts"
+	v-bind:timePass="leftOrPass"/>
+	<ProgressBar 
+	title="Month"
+	:end-label="progress.totalMonthDays + 'd'"
+	:count="progress.month"
+	:total="progress.totalMonthDays"
+	unit="d"
+	v-bind:percent="percentOrCounts"
+	v-bind:timePass="leftOrPass"/>
+	<ProgressBar 
+	title="Week"
+	end-label="Saturday"
+	:count="progress.week"
+	:total="7"
+	unit="d"
+	v-bind:percent="percentOrCounts"
+	v-bind:timePass="leftOrPass"/>
+	<ProgressBar 
+	title="Day"
+	end-label="24h"
+	:count="progress.day"
+	:total=24
+	unit="h"
+	v-bind:percent="percentOrCounts"
+	v-bind:timePass="leftOrPass"/>
+	<ProgressBar 
+	title="Hour"
+	end-label="60m"
+	:count="progress.hour"
+	:total=60
+	unit="m"
+	v-bind:percent="percentOrCounts"
+	v-bind:timePass="leftOrPass"/>
+	<ProgressBar 
+	title="Minute"
+	end-label="60s"
+	:count="progress.minute"
+	:total=60
+	unit="s"
+	v-bind:percent="percentOrCounts"
+	v-bind:timePass="leftOrPass"/>
+	</div>
+
+</template>

@@ -1,53 +1,72 @@
-<script setup>
-defineProps({
-  title: String,
-  endLabel: String,
-  percent: Number,
-});
+<script setup lang="ts">
+import { computed } from 'vue';
+const props = defineProps<{
+	title: string;
+	count: number;
+	total: number;
+	endLabel: string;
+	percent: boolean;
+	timePass: boolean;
+	unit: string;
+}>();
+
+const progress = computed(() => (props.count / props.total) * 100);
 </script>
 
 <template>
-  <p class="title">
-    {{ title }}
-  </p>
-  <div class="progress-bar">
-    <div
-      class="progress"
-      :style="{
-        width: percent * 100 + '%',
-      }"
-    />
-  </div>
-  <p class="end-label">
-    {{ endLabel }}
-  </p>
+	<div>
+		<div class="flex flex-row justify-between text-xs uppercase font-medium tracking-[1px]">
+			<p>
+				{{ title }}
+			</p>
+			<p class="text-xxs">
+				{{ endLabel }}
+			</p>
+		</div>
+
+		<!-- Progress Bar -->
+		<div class="relative rounded bg-[#aaa] w-full h-[24px]">
+			<div
+				class="progress h-full bg-[#555] rounded-l"
+				:style="{
+					width: progress + '%',
+				}"
+				:class="{
+					'transition-all duration-1000 ease-linear': progress < 100, 
+					// 'transition-none': progress === 100,
+				}"
+
+			/>
+			<div
+				class="progress relative min-w-fit text-right text-xs pt-1"
+				:style="{
+					width: progress + '%',
+				}"
+				:class="{
+					'transition-all duration-1000 ease-linear': progress < 100, 
+				}"
+			>
+				<template v-if="timePass">
+					{{
+						percent
+							? progress.toFixed(1) + '%'
+							: count.toFixed(1) + unit
+					}}
+				</template>
+				<template v-else>
+					{{
+						percent
+							? (100 - progress).toFixed(1) + '%'
+							: (total - count).toFixed(1) + unit
+					}}
+				</template>
+			</div>
+		</div>
+	</div>
 </template>
 
 <style scoped>
-.title {
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-align: left;
-}
-
-.progress-bar {
-  background-color: #aaa;
-  width: 100%;
-  height: 8px;
-  overflow: hidden;
-}
-
-.progress {
-  height: 100%;
-  background-color: #555;
-  transition: width 1s ease-out;
-}
-
-.end-label {
-  font-size: 12px;
-  text-align: right;
-  margin-top: 8px;
-}
+/* .progress {
+	transition: 1s ease-out;
+} */
 </style>

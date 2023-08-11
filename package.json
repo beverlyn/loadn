@@ -9,10 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "date-fns": "^2.30.0",
     "vue": "^3.2.37"
   },
   "devDependencies": {
+    "@iconify/json": "^2.2.99",
     "@vitejs/plugin-vue": "^3.0.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.3.3",
+    "unplugin-icons": "^0.16.5",
+    "unplugin-vue-components": "^0.25.1",
     "vite": "^3.0.0"
   }
 }
