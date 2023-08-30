@@ -55,27 +55,27 @@
 
 <template>
 	<div class="flex flex-row justify-between">
-	<ToggleSwitch
-		labelTitle="percentOrCounts"
-		v-model:checked="percentOrCounts"
-	>
-		{{ percentOrCounts ? '%' : '#' }}
-	</ToggleSwitch>
-	<ToggleSwitch
-		labelTitle="leftOrPass"
-		v-model:checked="leftOrPass"
-	>
-		<IconIcRoundHourglassBottom
-			class="transition"
-			:class="{
-				'rotate-180': leftOrPass,
-			}"
-		/>
-	</ToggleSwitch>
+		<ToggleSwitch
+			labelTitle="percentOrCounts"
+			v-model:checked="percentOrCounts"
+		>
+			{{ percentOrCounts ? '%' : '#' }}
+		</ToggleSwitch>
+		<ToggleSwitch
+			labelTitle="leftOrPass"
+			v-model:checked="leftOrPass"
+		>
+			<IconIcRoundHourglassBottom
+				class="transition"
+				:class="{
+					'rotate-180': leftOrPass,
+				}"
+			/>
+		</ToggleSwitch>
 	</div>
 
 	<div class="text-center font-sans mb-5">
-		<div class="date text-xl text-strong">
+		<div class="date text-xl font-bold">
 			{{ currentDateFormat }}
 		</div>
 
@@ -85,54 +85,54 @@
 	</div>
 
 	<div class="grid grid-rows-6 gap-10 align-between">
-	<ProgressBar 
-	title="Year"
-	:end-label="progress.totalYearDays + 'd'"
-	:count="progress.year"
-	:total="progress.totalYearDays"
-	unit="d"
-	v-bind:percent="percentOrCounts"
-	v-bind:timePass="leftOrPass"/>
-	<ProgressBar 
-	title="Month"
-	:end-label="progress.totalMonthDays + 'd'"
-	:count="progress.month"
-	:total="progress.totalMonthDays"
-	unit="d"
-	v-bind:percent="percentOrCounts"
-	v-bind:timePass="leftOrPass"/>
-	<ProgressBar 
-	title="Week"
-	end-label="Saturday"
-	:count="progress.week"
-	:total="7"
-	unit="d"
-	v-bind:percent="percentOrCounts"
-	v-bind:timePass="leftOrPass"/>
-	<ProgressBar 
-	title="Day"
-	end-label="24h"
-	:count="progress.day"
-	:total=24
-	unit="h"
-	v-bind:percent="percentOrCounts"
-	v-bind:timePass="leftOrPass"/>
-	<ProgressBar 
-	title="Hour"
-	end-label="60m"
-	:count="progress.hour"
-	:total=60
-	unit="m"
-	v-bind:percent="percentOrCounts"
-	v-bind:timePass="leftOrPass"/>
-	<ProgressBar 
-	title="Minute"
-	end-label="60s"
-	:count="progress.minute"
-	:total=60
-	unit="s"
-	v-bind:percent="percentOrCounts"
-	v-bind:timePass="leftOrPass"/>
+		<ProgressBar 
+			title="Year"
+			:end-label="progress.totalYearDays + 'd'"
+			:count="progress.year"
+			:total="progress.totalYearDays"
+			unit="d"
+			v-bind:percent="percentOrCounts"
+			v-bind:timePass="leftOrPass"/>
+		<ProgressBar 
+			title="Month"
+			:end-label="progress.totalMonthDays + 'd'"
+			:count="progress.month"
+			:total="progress.totalMonthDays"
+			unit="d"
+			v-bind:percent="percentOrCounts"
+			v-bind:timePass="leftOrPass"/>
+		<ProgressBar 
+			title="Week"
+			end-label="Saturday"
+			:count="progress.week"
+			:total="7"
+			unit="d"
+			v-bind:percent="percentOrCounts"
+			v-bind:timePass="leftOrPass"/>
+		<ProgressBar 
+			title="Day"
+			end-label="24h"
+			:count="progress.day"
+			:total=24
+			unit="h"
+			v-bind:percent="percentOrCounts"
+			v-bind:timePass="leftOrPass"/>
+		<ProgressBar 
+			title="Hour"
+			end-label="60m"
+			:count="progress.hour"
+			:total=60
+			unit="m"
+			v-bind:percent="percentOrCounts"
+			v-bind:timePass="leftOrPass"/>
+		<ProgressBar 
+			title="Minute"
+			end-label="60s"
+			:count="progress.minute"
+			:total=60
+			unit="s"
+			v-bind:percent="percentOrCounts"
+			v-bind:timePass="leftOrPass"/>
 	</div>
 
 </template>

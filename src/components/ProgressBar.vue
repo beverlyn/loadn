@@ -25,15 +25,14 @@ const progress = computed(() => (props.count / props.total) * 100);
 		</div>
 
 		<!-- Progress Bar -->
-		<div class="relative rounded bg-[#aaa] w-full h-[24px]">
+		<div class="relative rounded bg-[#3755898c] w-full h-[24px]">
 			<div
-				class="progress h-full bg-[#555] rounded-l"
+				class="progress h-full bg-[#375589] rounded-l" 
 				:style="{
 					width: progress + '%',
 				}"
 				:class="{
 					'transition-all duration-1000 ease-linear': progress < 100, 
-					// 'transition-none': progress === 100,
 				}"
 
 			/>
@@ -65,8 +64,4 @@ const progress = computed(() => (props.count / props.total) * 100);
 	</div>
 </template>
 
-<style scoped>
-/* .progress {
-	transition: 1s ease-out;
-} */
-</style>
+<!-- #555, 1b3159 -->
