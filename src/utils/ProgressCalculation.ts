@@ -19,7 +19,7 @@ function getDaysLeftInYear(date: Date) {
 export function getYearProgress(date: Date) {
     return ((getDaysInYear(date) - getDaysLeftInYear(date)) * 24 + date.getHours()) / 24;
 }
-export const getMonthProgress = (date: Date) => (date.getDate() * 24 + date.getHours()) / 24;
+export const getMonthProgress = (date: Date) => ((date.getDate() - 1) * 24 + date.getHours()) / 24;
 export const getWeekProgress = (date: Date) => ((date.getDay() + 1) * 24 + date.getHours()) / 24;
 export const getDayProgress = (date: Date) => (date.getHours() * 60 + date.getMinutes()) / 60;
 export const getHourProgress = (date: Date) => date.getMinutes();
