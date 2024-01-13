@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "date-fns": "^2.30.0",
+    "esbuild": "^0.19.11",
     "vue": "^3.2.37"
   },
   "devDependencies": {
